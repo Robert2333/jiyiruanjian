@@ -12,7 +12,35 @@
 #import <React/RCTRootView.h>
 #import <UserNotifications/UserNotifications.h>
 @implementation AppDelegate
-
+{
+RCTBridge* _myBridge;
+  RCTRootView* _rootView;
+}
+// 通知的点击事件
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
+  
+  NSDictionary * userInfo = response.notification.request.content.userInfo;
+  UNNotificationRequest *request = response.notification.request; // 收到推送的请求
+  UNNotificationContent *content = request.content; // 收到推送的消息内容
+  NSNumber *badge = content.badge;  // 推送消息的角标
+  NSString *body = content.body;    // 推送消息体
+  UNNotificationSound *sound = content.sound;  // 推送消息的声音
+  NSString *subtitle = content.subtitle;  // 推送消息的副标题
+  NSString *title = content.title;  // 推送消息的标题
+  static NSString* str=@"1";
+  str=[str stringByAppendingString:@"1"];
+  NSArray *imageList = @[str,
+                         @"http://foo.com/bar2.png"];
+  
+  NSDictionary *props = @{@"images" : imageList};
+//  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:_myBridge
+//                                                   moduleName:@"ImageBrowserApp"
+//                                            initialProperties:props];
+  _rootView.appProperties=props;
+  // Warning: UNUserNotificationCenter delegate received call to -userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler: but the completion handler was never called.
+  completionHandler();  // 系统要求执行这个方法
+  
+}
 
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center
 willPresentNotification:(UNNotification *)notification
@@ -23,12 +51,17 @@ willPresentNotification:(UNNotification *)notification
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+  _myBridge=bridge;
+  NSArray *imageList = @[@"1",
+                         @"2"];
+  
+  NSDictionary *props = @{@"images" : imageList};
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"AwesomeProject"
-                                            initialProperties:nil];
-
+                                            initialProperties:props];
+  _rootView=rootView;
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
@@ -50,7 +83,7 @@ willPresentNotification:(UNNotification *)notification
   [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
 
   }];
-
+  
   return YES;
 }
 

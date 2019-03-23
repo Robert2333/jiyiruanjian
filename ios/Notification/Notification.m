@@ -19,6 +19,7 @@ RCT_EXPORT_MODULE();
 
 -(void)setNotification:(NSString *)title time:(NSString *)time{
   //时间转换
+  static int i=0;
     double timeNum=[time doubleValue];
   
   
@@ -28,14 +29,15 @@ RCT_EXPORT_MODULE();
   //50s后提醒
   UNTimeIntervalNotificationTrigger *trigger1 = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:timeNum repeats:NO];
   UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-
+  
   content.title = title;
   content.subtitle = [NSString stringWithFormat:@"Dely 装逼大会竞选时间提醒 - subtitle"];
   content.body = @"Dely 装逼大会总决赛时间到，欢迎你参加总决赛！希望你一统X界 - body";
   content.badge = @666;
   content.sound = [UNNotificationSound defaultSound];
   content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
-  UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:@"xxxx" content:content trigger:trigger1];
+  NSString* id=[NSString stringWithFormat:@"%d",i++];
+  UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:id content:content trigger:trigger1];
   [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
     if (!error) {
       //NSLog(@"推送已添加成功 %@", "xxx");
