@@ -27,12 +27,11 @@ RCTBridge* _myBridge;
   UNNotificationSound *sound = content.sound;  // 推送消息的声音
   NSString *subtitle = content.subtitle;  // 推送消息的副标题
   NSString *title = content.title;  // 推送消息的标题
-  static NSString* str=@"1";
-  str=[str stringByAppendingString:@"1"];
-  NSArray *imageList = @[str,
-                         @"http://foo.com/bar2.png"];
-  
-  NSDictionary *props = @{@"images" : imageList};
+//  static NSString* str=@"1";
+//  NSArray *imageList = @[@"http://foo.com/bar1.png",
+//                         @"http://foo.com/bar2.png"];
+//
+  NSDictionary *props = @{@"notificationDate" : subtitle};
 //  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:_myBridge
 //                                                   moduleName:@"ImageBrowserApp"
 //                                            initialProperties:props];
@@ -52,10 +51,10 @@ willPresentNotification:(UNNotification *)notification
 {
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   _myBridge=bridge;
-  NSArray *imageList = @[@"1",
-                         @"2"];
+//  NSArray *imageList = @[@"1",
+//                         @"2"];
   
-  NSDictionary *props = @{@"images" : imageList};
+  NSDictionary *props = @{@"notificationDate" : @""};
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"AwesomeProject"
                                             initialProperties:props];

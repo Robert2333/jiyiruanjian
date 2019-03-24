@@ -36,7 +36,7 @@ export default class App extends Component<Props> {
   onPressLearnMore = () => {
     //todo 改成了5
     //Notification.addEvent('徐俊超又成功啦', this.state.minus);
-    Notification.addEvent('徐俊超又成功啦', '1');
+    Notification.addEvent('徐俊超又成功啦', '2019-02-09','1');
     Alert.alert(
       'test',
       'All your data are belong to us.'

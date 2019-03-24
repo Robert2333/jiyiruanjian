@@ -23,6 +23,14 @@ const styles = StyleSheet.create({
     @observable
     tabState = styles.container;
 
+    @observable
+    path = {path:'2019-02-11'};
+
+    @action 
+    setPath=(path)=>{
+        this.path={...path};
+    }
+    
     @action
     hideTab=()=>{
         this.tabState=styles.hidden;

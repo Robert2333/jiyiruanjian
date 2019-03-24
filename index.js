@@ -9,10 +9,11 @@ import { Provider } from "mobx-react";
 import React from 'react';
 import store from './stores/store.js'
 class Index extends React.Component {
+
     render() {
         return (
             <Provider {...store}>
-                <App />
+                <App date={this.props.notificationDate}/>
             </Provider>
         )
     }

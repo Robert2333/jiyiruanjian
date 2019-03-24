@@ -27,6 +27,8 @@ function px2dp(px) {
   tabState: stores.main.tabState,
   hideTab: stores.main.hideTab,
   showTab: stores.main.showTab,
+  path: stores.main.path,
+  setPath: stores.main.setPath,
 }))
 @observer
 export default class App extends Component {
@@ -36,17 +38,20 @@ export default class App extends Component {
     return true;
   }
 
-  state = { selectedTab: 'profile', images: ['11'], key: true, path: 'test' }
+  state = { selectedTab: 'home', preNotificationDate: '', path: 'test' }
   hideTabBar = () => {
     this.setState({ tabBarStyle: tabStyles.hidden });
   }
   render() {
-    const zzz = 'feiwu';
-    if (this.props.images !== undefined) {
-      const zzz = this.props.images[0];
-      if (zzz === '11' && this.state.key === true) {
-        this.setState({ key: false }, () => {
-          this.setState({ selectedTab: 'profile', path: zzz })
+    if (this.props.date !== undefined) {
+      
+      let date = this.props.date;
+      if (date !== undefined && date !== this.state.preNotificationDate) {
+        this.setState({ preNotificationDate: date }, () => {
+          date=date.substr(0,10);
+          this.props.setPath({path:date});
+          this.setState({ selectedTab: 'profile' });
+          
         })
       }
     }
@@ -60,8 +65,8 @@ export default class App extends Component {
           renderSelectedIcon={() => <Icon name="home" size={px2dp(30)} color="#3496f0" />}
           // badgeText="0"
           onPress={() => this.setState({ selectedTab: 'home' })}>
-          {<View style={{ flex: 1, justifyContent: 'center' }}>        
-          <T /></View>}
+          {<View style={{ flex: 1, justifyContent: 'center' }}>
+            <T /></View>}
         </TabNavigator.Item>
         <TabNavigator.Item
           selected={this.state.selectedTab === 'profile'}
@@ -71,15 +76,12 @@ export default class App extends Component {
           renderSelectedIcon={() => <Icon name="user" size={px2dp(30)} color="#3496f0" />}
           renderBadge={() => { <Text>2</Text> }}
           onPress={() => this.setState({ selectedTab: 'profile' })}>
-          <NavPage path={this.state.path} />
+          <NavPage />
         </TabNavigator.Item>
       </TabNavigator>
     )
   }
 }
-
-
-AppRegistry.registerComponent('ImageBrowserApp', () => App);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
