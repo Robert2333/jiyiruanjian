@@ -46,12 +46,12 @@ export default class App extends Component {
     if (this.props.date !== undefined) {
       let date = this.props.date;
       const preNotificationDate=AsyncStorage.getItem('preNotificationDate');
-      alert(JSON.stringify(preNotificationDate));
-      if (date !== undefined &&date!==''&& date !==preNotificationDate) {
-        AsyncStorage.setItem('preNotificationDate',date,()=>{
+      if (date !== undefined &&date.trim()!==''&& date !== this.state.preNotificationDate) {
+        this.setState({ preNotificationDate: date }, () => {
           date=date.substr(0,10);
           this.props.setPath({path:date});
           this.setState({ selectedTab: 'profile' });
+          
         })
       }
     }

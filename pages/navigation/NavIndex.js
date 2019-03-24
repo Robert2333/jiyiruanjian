@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet,ListView} from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet,NativeModules} from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Word from '../word/Word.js'
 import ListItem from './component/ListItem/ListItem'
 import { inject, observer } from 'mobx-react'
+
+const Notification = NativeModules.Notification;
 
 @inject(stores => ({
   path: stores.main.path,
@@ -26,6 +28,10 @@ class HomeScreen extends React.Component {
     })
       .then((response) => response.json())
       .then((result) => {
+        result.forEache(v=>{
+          //'1'是时间，后期从datepick选
+          Notification.addEvent('复习啦', v.date,'1');
+        })
         this.setState({dataSource:result})
       })
       .catch((error) => {
@@ -35,13 +41,10 @@ class HomeScreen extends React.Component {
   //url https://citynotes.cn/getContent
   componentDidMount=()=>{
     
-    alert(this.props.path.path);
-    if(this.props.path!==''&&this.props.path!==undefined){
-      alert('1111');
+    if(this.props.path.path!==''&&this.props.path.path!==undefined){
       this.props.navigation.navigate('Word',{date:this.props.path.path})
       this.props.setPath({path:''});
     }
-    alert('nav')
     this.getData();
   }
 
