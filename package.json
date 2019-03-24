@@ -7,6 +7,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "babel-preset-mobx": "^2.0.0",
+    "mobx": "^5.9.0",
+    "mobx-react": "^5.4.3",
     "react": "16.8.3",
     "react-native": "0.59.1",
     "react-native-ios-kit": "^0.0.7",
