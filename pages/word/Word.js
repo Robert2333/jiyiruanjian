@@ -21,10 +21,10 @@ export default class DetailsScreen extends React.Component {
 
     render() {
         const { navigation } = this.props;
-        const itemId = navigation.getParam('id') === undefined ? 0 : navigation.getParam('id');
+        const date=navigation.getParam('date', null);
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>Details Screen</Text>
+                <Text>{date}</Text>
                 <Button
                     title="Go to Details"
                     onPress={() => this.props.navigation.push('Details', { id: itemId + 1 })}

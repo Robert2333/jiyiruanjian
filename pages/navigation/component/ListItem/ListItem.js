@@ -4,7 +4,8 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons'
 
 export default class MyListItem extends React.PureComponent {
     _onPress = () => {
-        this.props.navigation.navigate('Word')
+        const {date,navigation}=this.props;
+        navigation.navigate('Word',{date})
     };
 
     render() {
