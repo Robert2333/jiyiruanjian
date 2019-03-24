@@ -36,7 +36,7 @@ export default class App extends Component {
     return true;
   }
 
-  state = { selectedTab: 'home', images: ['11'], key: true, path: 'test' }
+  state = { selectedTab: 'profile', images: ['11'], key: true, path: 'test' }
   hideTabBar = () => {
     this.setState({ tabBarStyle: tabStyles.hidden });
   }
