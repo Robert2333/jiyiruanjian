@@ -21,23 +21,29 @@ RCT_EXPORT_MODULE();
 
 -(void) setNotification:(NSString *)title subTitle:(NSString *)subTitle time:(NSString *)time{
   double timeNum=[time doubleValue];
-  //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  UNTimeIntervalNotificationTrigger *trigger=[self createTrigger:(timeNum)];
-  UNTimeIntervalNotificationTrigger *trigger1=[self createTrigger:(timeNum+60*30)];
-  UNTimeIntervalNotificationTrigger *trigger2=[self createTrigger:(timeNum+60*60*12)];
-  UNTimeIntervalNotificationTrigger *trigger3=[self createTrigger:(timeNum+60*60*24)];
-  UNTimeIntervalNotificationTrigger *trigger4=[self createTrigger:(timeNum+60*60*24*2)];
-  UNTimeIntervalNotificationTrigger *trigger5=[self createTrigger:(timeNum+60*60*24*4)];
-  UNTimeIntervalNotificationTrigger *trigger6=[self createTrigger:(timeNum+60*60*24*7)];
-  UNTimeIntervalNotificationTrigger *trigger7=[self createTrigger:(timeNum+60*60*24*15)];
-  [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger];
-//  [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger1];
-//  [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-2"] trigger:trigger2];
-//  [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-3"] trigger:trigger3];
-//  [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-4"] trigger:trigger4];
-//  [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-5"] trigger:trigger5];
-//  [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-6"] trigger:trigger6];
-//  [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-7"] trigger:trigger7];
+  //使用NSUserDefaults来保存
+  
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSString * key = [defaults objectForKey:subTitle];
+  if(key==nil){
+    [defaults setObject:subTitle forKey:subTitle];
+    UNTimeIntervalNotificationTrigger *trigger=[self createTrigger:(timeNum)];
+//    UNTimeIntervalNotificationTrigger *trigger1=[self createTrigger:(timeNum+60*30)];
+//    UNTimeIntervalNotificationTrigger *trigger2=[self createTrigger:(timeNum+60*60*12)];
+//    UNTimeIntervalNotificationTrigger *trigger3=[self createTrigger:(timeNum+60*60*24)];
+//    UNTimeIntervalNotificationTrigger *trigger4=[self createTrigger:(timeNum+60*60*24*2)];
+//    UNTimeIntervalNotificationTrigger *trigger5=[self createTrigger:(timeNum+60*60*24*4)];
+//    UNTimeIntervalNotificationTrigger *trigger6=[self createTrigger:(timeNum+60*60*24*7)];
+//    UNTimeIntervalNotificationTrigger *trigger7=[self createTrigger:(timeNum+60*60*24*15)];
+    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger];
+//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger1];
+//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-2"] trigger:trigger2];
+//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-3"] trigger:trigger3];
+//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-4"] trigger:trigger4];
+//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-5"] trigger:trigger5];
+//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-6"] trigger:trigger6];
+//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-7"] trigger:trigger7];
+  }
 }
 
 -(void)createNotification:(NSString *)title subTitle:(NSString *)subTitle trigger:(UNTimeIntervalNotificationTrigger *)trigger{
@@ -47,8 +53,8 @@ RCT_EXPORT_MODULE();
   
   content.title = title;
   content.subtitle = subTitle;
-  content.body = @"测试body";
-  content.badge = @6;
+  content.body = @"复习喽";
+  content.badge = [NSNumber numberWithInt:1];
   content.sound = [UNNotificationSound defaultSound];
   content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
   UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:subTitle content:content trigger:trigger];

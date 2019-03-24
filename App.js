@@ -7,7 +7,7 @@
  */
 import React, { Component } from 'react';
 import TabNavigator from 'react-native-tab-navigator';
-import { StyleSheet, Text, View, AppRegistry, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, AppRegistry, Button, FlatList ,AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Dimensions } from 'react-native'
 import NavPage from './pages/navigation/NavIndex'
@@ -44,14 +44,14 @@ export default class App extends Component {
   }
   render() {
     if (this.props.date !== undefined) {
-      
       let date = this.props.date;
-      if (date !== undefined && date !== this.state.preNotificationDate) {
-        this.setState({ preNotificationDate: date }, () => {
+      const preNotificationDate=AsyncStorage.getItem('preNotificationDate');
+      alert(JSON.stringify(preNotificationDate));
+      if (date !== undefined &&date!==''&& date !==preNotificationDate) {
+        AsyncStorage.setItem('preNotificationDate',date,()=>{
           date=date.substr(0,10);
           this.props.setPath({path:date});
           this.setState({ selectedTab: 'profile' });
-          
         })
       }
     }

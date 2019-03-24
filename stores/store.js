@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     tabState = styles.container;
 
     @observable
-    path = {path:'2019-02-11'};
+    path = {path:''};
 
     @action 
     setPath=(path)=>{
