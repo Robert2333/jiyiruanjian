@@ -29,7 +29,7 @@ class HomeScreen extends React.Component {
       .then((response) => response.json())
       .then((result) => {
         for(let i=0;i<result.length;i++){
-          Notification.addEvent('复习啦', result[i].date,'1');
+          Notification.addEvent('复习了',result[i].date,'1');
         }
         this.setState({dataSource:result})
       })

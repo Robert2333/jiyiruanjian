@@ -19,14 +19,14 @@ RCT_EXPORT_MODULE();
 
 
 
--(void) setNotification:(NSString *)title subTitle:(NSString *)subTitle time:(NSString *)time{
+-(void) setNotification:(NSString * )title subTitle:(NSString *)subTitle time:(NSString *)time{
   double timeNum=[time doubleValue];
   //使用NSUserDefaults来保存
   
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if(subTitle!=nil){
   NSString * key = [defaults objectForKey:subTitle];
-  if(key!=nil){
+  if(key==nil){
     [defaults setObject:subTitle forKey:subTitle];
   //  UNTimeIntervalNotificationTrigger *trigger=[self createTrigger:(timeNum)];
     UNTimeIntervalNotificationTrigger *trigger1=[self createTrigger:(timeNum+60*30)];
@@ -79,7 +79,7 @@ RCT_EXPORT_MODULE();
 }
 
 
-RCT_EXPORT_METHOD(addEvent:(NSString *)title subTtile:(NSString *)subTitle time:(NSString *)time)
+RCT_EXPORT_METHOD(addEvent:(NSString * )title subTtile:(NSString *)subTitle time:(NSString *)time)
 {
   RCTLogInfo(@"Pretending to create an event %@ at %@", title, time);
   [self setNotification:title subTitle:subTitle time:time];
