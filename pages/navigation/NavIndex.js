@@ -28,18 +28,18 @@ class HomeScreen extends React.Component {
     })
       .then((response) => response.json())
       .then((result) => {
-        for(let i=0;i<result.length;i++){
-          Notification.addEvent('复习了',result[i].date,'1');
-        }
+        // for(let i=0;i<result.length;i++){
+        //   Notification.addEvent('复习了',result[i].date,'1');
+        // }
         this.setState({dataSource:result})
       })
       .catch((error) => {
         console.error(error);
       });
   }
+  
   //url https://citynotes.cn/getContent
   componentDidMount=()=>{
-    
     if(this.props.path.path!==''&&this.props.path.path!==undefined){
       this.props.navigation.navigate('Word',{date:this.props.path.path})
       this.props.setPath({path:''});

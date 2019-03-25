@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, Button, TouchableOpacity, StyleSheet, NativeModules } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import IosButton from '../../component/IosButton/IosButton'
+import MyDatePicker from './component/MyDatePicker'
+import StorageUtil from '../utils/StorageUtil'
 //push直接入栈
 
 
-
+const Notification = NativeModules.Notification;
 const 加载中 = '加载中'
 @inject(stores => ({
     hideTab: stores.main.hideTab,
@@ -15,7 +17,7 @@ const 加载中 = '加载中'
 @observer
 export default class DetailsScreen extends React.Component {
 
-    state = { words: [], index: 0, word: { kanji: 加载中, katakana: 加载中, chinese: 加载中 }, up: false, down: false }
+    state = { words: [], index: 0, word: { kanji: 加载中, katakana: 加载中, chinese: 加载中 }, up: false, down: false, showPicker: false }
     getWords = (date) => {
         return fetch(`https://citynotes.cn/getWord?date=${date}`, {
             method: 'GET',
@@ -31,6 +33,22 @@ export default class DetailsScreen extends React.Component {
             .catch((error) => {
                 console.error(error);
             });
+    }
+
+    pickerPress = (minus) => {
+        this.setState({ showPicker: false })
+        const { navigation } = this.props;
+        const date = navigation.getParam('date', null);
+        StorageUtil.save(date, date);
+        Notification.addEvent('复习了', date, minus);
+    }
+
+    pickerCancel=()=>{
+        this.setState({ showPicker: false })
+        const { navigation } = this.props;
+        const date = navigation.getParam('date', null);
+        StorageUtil.save(date, date);
+        alert('已经取消该课')
     }
 
     nextOrPre = (isNext) => {
@@ -72,8 +90,19 @@ export default class DetailsScreen extends React.Component {
         const { navigation } = this.props;
         const date = navigation.getParam('date', null);
         this.getWords(date);
+
         this.props.hideTab();
 
+        StorageUtil.get(date).then(d => {
+            if (d == "null") {
+                //显示时间选择
+                this.setState({ showPicker: true })
+
+            }
+        })
+        // if(StorageUtil.get(date)!=undefined){
+
+        // }
     }
 
     componentWillUnmount = () => {
@@ -82,9 +111,9 @@ export default class DetailsScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-          title: navigation.getParam('date', '单词'),
+            title: navigation.getParam('date', '单词'),
         };
-      };
+    };
 
     render() {
         const showUp = this.state.up ? styles.showText : styles.hideText;
@@ -107,6 +136,11 @@ export default class DetailsScreen extends React.Component {
                         </View>
                     </View>
                 </View>
+                <MyDatePicker
+                    visible={this.state.showPicker}
+                    ok={this.pickerPress} 
+                    cancel={this.pickerCancel}
+                    />
             </GestureRecognizer>
         );
     }

@@ -48,17 +48,17 @@ export default class App extends Component<Props> {
 
       <View style={styles.container}>
         <Switch />
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
+        <Text style={styles.welcome}>这里搞随机单词测试</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         <Text>zhongyu neng yong le</Text>
-        <DatePickerIOS style={{ width: 400, height: 100 }}
+        {/* <DatePickerIOS style={{ width: 400, height: 100 }}
           mode={"datetime"}   //选择器模式: 'date'(日期), 'time'(时间), 'datetime'(日期和时间)
           minimumDate={new Date()}  //最小时间 (这里设置的是当前的时间)
           minuteInterval={1} //最小时间间隔 (这里设置的是30分钟)
           date={this.state.chosenDate}  //默认的时间
           onDateChange={this.setDate}  //日期被修改时回调此函数
-        />
+        /> */}
         <Button
           onPress={this.onPressLearnMore}
           title="Learn More"
