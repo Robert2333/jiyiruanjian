@@ -24,6 +24,7 @@ RCT_EXPORT_MODULE();
   //使用NSUserDefaults来保存
   
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  if(subTitle!=nil){
   NSString * key = [defaults objectForKey:subTitle];
   if(key!=nil){
     [defaults setObject:subTitle forKey:subTitle];
@@ -43,6 +44,7 @@ RCT_EXPORT_MODULE();
     [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-5"] trigger:trigger5];
     [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-6"] trigger:trigger6];
     [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-7"] trigger:trigger7];
+  }
   }
 }
 

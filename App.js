@@ -61,7 +61,7 @@ export default class App extends Component {
           selected={this.state.selectedTab === 'home'}
           tabStyle={styles.item}
           title="随机单词"
-          renderIcon={() => <Icon name="home" size={px2dp(40)} color="#666" />}
+          renderIcon={() => <Icon name="home" size={px2dp(30)} color="#666" />}
           renderSelectedIcon={() => <Icon name="home" size={px2dp(30)} color="#3496f0" />}
           // badgeText="0"
           onPress={() => this.setState({ selectedTab: 'home' })}>

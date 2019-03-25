@@ -80,6 +80,12 @@ export default class DetailsScreen extends React.Component {
         this.props.showTab();
     }
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+          title: navigation.getParam('date', '单词'),
+        };
+      };
+
     render() {
         const showUp = this.state.up ? styles.showText : styles.hideText;
         const showDown = this.state.down ? styles.showText : styles.hideText;

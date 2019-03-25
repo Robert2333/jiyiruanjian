@@ -28,10 +28,9 @@ class HomeScreen extends React.Component {
     })
       .then((response) => response.json())
       .then((result) => {
-        result.forEache(v=>{
-          //'1'是时间，后期从datepick选
-          Notification.addEvent('复习啦', v.date,'1');
-        })
+        for(let i=0;i<result.length;i++){
+          Notification.addEvent('复习啦', result[i].date,'1');
+        }
         this.setState({dataSource:result})
       })
       .catch((error) => {
