@@ -6,8 +6,11 @@
 //  Copyright © 2019 Facebook. All rights reserved.
 //
 
-#ifndef Singleton_h
-#define Singleton_h
-
-
-#endif /* Singleton_h */
+@interface Singleton : NSObject
+{
+  @public NSString * date;
+}
++(instancetype) shareInstance;
++(id) allocWithZone:(struct _NSZone *)zone;
+-(id) copyWithZone:(struct _NSZone *)zone;
+@end

@@ -11,7 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Test : NSObject
-
++(instancetype) shareInstance;
++(id) allocWithZone:(struct _NSZone *)zone;
+-(id) copyWithZone:(struct _NSZone *)zone;
 @end
 
 NS_ASSUME_NONNULL_END

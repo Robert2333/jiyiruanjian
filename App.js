@@ -40,24 +40,25 @@ export default class App extends Component {
   shouldComponentUpdate = (nextProps, nextState) => {
     return true;
   }
-  componentWillUpdate = () => {
-   // alert(this.props.notificationDate.path);
-    let date=this.props.notificationDate.path;
-    if(date==undefined){
-      date='';
-    }
-      if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
-        StorageUtil.get(date).then(d => {
-          if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
-            StorageUtil.save(date, date);
-            date = date.substr(0, 10);
-            this.props.setPath({ path: date });
-            this.setState({ selectedTab: 'profile' });
-          }
-        })
-      }
-  }
+  // componentWillUpdate = () => {
+  //  // alert(this.props.notificationDate.path);
+  //   let date=this.props.notificationDate.path;
+  //   if(date==undefined){
+  //     date='';
+  //   }
+  //     if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
+  //       StorageUtil.get(date).then(d => {
+  //         if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
+  //           StorageUtil.save(date, date);
+  //           date = date.substr(0, 10);
+  //           this.props.setPath({ path: date });
+  //           this.setState({ selectedTab: 'profile' });
+  //         }
+  //       })
+  //     }
+  // }
 
+ 
   componentWillReceiveProps=(nextProps)=>{
     this.goToNavIndex(nextProps);
   }
@@ -78,7 +79,7 @@ export default class App extends Component {
         })
       }
   }
-  componentDidUpdate = () => {
+  componentDidMount = () => {
       this.goToNavIndex(this.props);
   }
 

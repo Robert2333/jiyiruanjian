@@ -37,6 +37,8 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* AwesomeProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* AwesomeProjectTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		3E09381E224A184800281F02 /* Singleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E09381D224A184800281F02 /* Singleton.m */; };
+		3E093825224A2A1500281F02 /* First.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E093824224A2A1500281F02 /* First.m */; };
 		3E44A3492243930F00FA2B71 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E44A3452243916000FA2B71 /* libRCTPushNotification.a */; };
 		3E44A34D2243BB9B00FA2B71 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E44A34B2243BB9B00FA2B71 /* UserNotifications.framework */; };
 		3E44A34E2243BB9B00FA2B71 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E44A34C2243BB9B00FA2B71 /* UserNotificationsUI.framework */; };
@@ -439,6 +441,10 @@
 		2D02E4901E0B4A5D006451C7 /* AwesomeProject-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AwesomeProject-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CD06DA9475041CAA3122F50 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		3E09381D224A184800281F02 /* Singleton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Singleton.m; sourceTree = "<group>"; };
+		3E09381F224A188900281F02 /* Singleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
+		3E093823224A2A1500281F02 /* First.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = First.h; sourceTree = "<group>"; };
+		3E093824224A2A1500281F02 /* First.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = First.m; sourceTree = "<group>"; };
 		3E44A33F2243915F00FA2B71 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		3E44A34B2243BB9B00FA2B71 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		3E44A34C2243BB9B00FA2B71 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
@@ -663,6 +669,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				3E09381D224A184800281F02 /* Singleton.m */,
+				3E09381F224A188900281F02 /* Singleton.h */,
 			);
 			name = AwesomeProject;
 			sourceTree = "<group>";
@@ -717,6 +725,8 @@
 			children = (
 				3E44A3502243C30E00FA2B71 /* Notification.h */,
 				3E44A3512243C34A00FA2B71 /* Notification.m */,
+				3E093823224A2A1500281F02 /* First.h */,
+				3E093824224A2A1500281F02 /* First.m */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -1434,6 +1444,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E44A3522243C34A00FA2B71 /* Notification.m in Sources */,
+				3E093825224A2A1500281F02 /* First.m in Sources */,
+				3E09381E224A184800281F02 /* Singleton.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);

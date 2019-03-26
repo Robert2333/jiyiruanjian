@@ -11,11 +11,15 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <UserNotifications/UserNotifications.h>
+#import "Singleton.h"
 @implementation AppDelegate
 {
 RCTBridge* _myBridge;
   RCTRootView* _rootView;
+  NSDictionary *_props;
 }
+
+
 // 通知的点击事件
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
   
@@ -27,11 +31,16 @@ RCTBridge* _myBridge;
   UNNotificationSound *sound = content.sound;  // 推送消息的声音
   NSString *subtitle = content.subtitle;  // 推送消息的副标题
   NSString *title = content.title;  // 推送消息的标题
+  Singleton *s=[[Singleton alloc]init];
+  s->date=subtitle;
 //  static NSString* str=@"1";
 //  NSArray *imageList = @[@"http://foo.com/bar1.png",
 //                         @"http://foo.com/bar2.png"];
 //
+  printf("----------------------------------");
+
   NSDictionary *props = @{@"notificationDate" : subtitle};
+//  s->date=props;
 //  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:_myBridge
 //                                                   moduleName:@"ImageBrowserApp"
 //                                            initialProperties:props];
@@ -53,8 +62,30 @@ willPresentNotification:(UNNotification *)notification
   _myBridge=bridge;
 //  NSArray *imageList = @[@"1",
 //                         @"2"];
+  //如果是通过本地通知启动的
+  UILocalNotification * localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+  Singleton *s=[[Singleton alloc]init];
+  NSString * hello=@"xjc";
+  if(s->date!=nil){
+    hello=(s->date);
+  }
+  NSDictionary *props = @{@"notificationDate" : hello};
+   printf("props:------------------");
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  //获取用户的推送授权 iOS 10新方法
+  [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
+                        completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                          
+                        }];
   
-  NSDictionary *props = @{@"notificationDate" : @""};
+  
+  //获取当前的通知设置，UNNotificationSettings 是只读对象，readOnly，只能通过以下方法获取
+  [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+    
+  }];
+  [center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
+    
+  }];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"AwesomeProject"
                                             initialProperties:props];
@@ -67,22 +98,18 @@ willPresentNotification:(UNNotification *)notification
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
+  
+
+  _rootView.appProperties=@{@"notificationDate" : @"2019-03-13"};
+  return YES;
+}
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions;{
   // 获取通知中心--单例
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  
   //设置代理
   center.delegate = self;
-
-  //获取用户的推送授权 iOS 10新方法
-  [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
-                        completionHandler:^(BOOL granted, NSError * _Nullable error) {
-
-                        }];
-
-  //获取当前的通知设置，UNNotificationSettings 是只读对象，readOnly，只能通过以下方法获取
-  [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-
-  }];
-  
   return YES;
 }
 
