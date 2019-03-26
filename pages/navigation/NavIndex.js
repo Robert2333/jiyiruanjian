@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet,NativeModules} from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, NativeModules } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Word from '../word/Word.js'
 import ListItem from './component/ListItem/ListItem'
@@ -18,9 +18,9 @@ class HomeScreen extends React.Component {
     title: '单词列表',
   };
 
- getData=()=> {
-    return fetch('https://citynotes.cn/getContent',{
-      method:'GET',
+  getData = () => {
+    return fetch('https://citynotes.cn/getContent', {
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -31,34 +31,44 @@ class HomeScreen extends React.Component {
         // for(let i=0;i<result.length;i++){
         //   Notification.addEvent('复习了',result[i].date,'1');
         // }
-        this.setState({dataSource:result})
+        this.setState({ dataSource: result })
       })
       .catch((error) => {
         console.error(error);
       });
   }
-  
+
   //url https://citynotes.cn/getContent
-  componentDidMount=()=>{
-    if(this.props.path.path!==''&&this.props.path.path!==undefined){
-      this.props.navigation.navigate('Word',{date:this.props.path.path})
-      this.props.setPath({path:''});
+  componentDidMount = () => {
+    if (this.props.path.path !== '' && this.props.path.path !== undefined) {
+      this.props.navigation.navigate('Word', { date: this.props.path.path })
+      this.props.setPath({ path: '' });
     }
     this.getData();
   }
 
-  state={dataSource:[]}
+  componentWillUpdate = () => {
+    // alert(this.props.path.path)
+    if (this.props.path.path !== '' && this.props.path.path !== undefined) {
+      this.props.navigation.navigate('Word', { date: this.props.path.path })
+      this.props.setPath(Object.assign({}, { path: '' }));
+    }
+  }
+  state = { dataSource: [] }
 
   render() {
     return (
       <View style={styles.container}>
         <FlatList
           data={this.state.dataSource}
-          renderItem={({ item,index }) =><ListItem key={index} date={item.date} index={index} count={item.count}
-          navigation={this.props.navigation}/>}
-          ItemSeparatorComponent={() => <View  style={styles.separator} />
-        }
-      
+          renderItem={({ item, index }) => <ListItem key={index} date={item.date} index={index} count={item.count}
+            navigation={this.props.navigation} />}
+          ItemSeparatorComponent={() => <View style={styles.separator}
+         
+          />
+
+          }
+
         />
       </View>
     );
@@ -84,7 +94,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    
+    marginBottom:80,
+
   },
   item: {
     padding: 10,

@@ -7,12 +7,13 @@
  */
 import React, { Component } from 'react';
 import TabNavigator from 'react-native-tab-navigator';
-import { StyleSheet, Text, View, AppRegistry, Button, FlatList ,AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View, AppRegistry, Button, FlatList, AsyncStorage } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Dimensions } from 'react-native'
 import NavPage from './pages/navigation/NavIndex'
 import T from './pages/Index'
 import { inject, observer } from 'mobx-react'
+import StorageUtil from './pages/utils/StorageUtil'
 const deviceW = Dimensions.get('window').width
 
 const basePx = 375
@@ -37,24 +38,29 @@ export default class App extends Component {
   shouldComponentUpdate = (nextProps, nextState) => {
     return true;
   }
+  componentDidUpdate = () => {
+    if (this.props.date !== undefined) {
+      let date = this.props.date;
+      if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
+        StorageUtil.get(date).then(d => {
+          if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
+            StorageUtil.save(date, date);
+            date = date.substr(0, 10);
+            this.props.setPath({ path: date });
+            this.setState({ selectedTab: 'profile' });
+          }
+        })
+      }
+    }
+  }
+
 
   state = { selectedTab: 'home', preNotificationDate: '', path: 'test' }
   hideTabBar = () => {
     this.setState({ tabBarStyle: tabStyles.hidden });
   }
   render() {
-    if (this.props.date !== undefined) {
-      let date = this.props.date;
-      const preNotificationDate=AsyncStorage.getItem('preNotificationDate');
-      if (date !== undefined &&date.trim()!==''&& date !== this.state.preNotificationDate) {
-        this.setState({ preNotificationDate: date }, () => {
-          date=date.substr(0,10);
-          this.props.setPath({path:date});
-          this.setState({ selectedTab: 'profile' });
-          
-        })
-      }
-    }
+
     return (
       <TabNavigator tabBarStyle={this.props.tabState} sceneStyle={{ paddingBottom: 0 }}>
         <TabNavigator.Item
@@ -66,7 +72,13 @@ export default class App extends Component {
           // badgeText="0"
           onPress={() => this.setState({ selectedTab: 'home' })}>
           {<View style={{ flex: 1, justifyContent: 'center' }}>
-            <T /></View>}
+            <Text>sadfasdfasd</Text>
+            <Text>sadfasdfasd</Text>
+            <Text>sadfasdfasd</Text>
+            {/* <Text>{this.props.date}}</Text> */}
+            <T />
+
+          </View>}
         </TabNavigator.Item>
         <TabNavigator.Item
           selected={this.state.selectedTab === 'profile'}
@@ -105,3 +117,5 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+AppRegistry.registerComponent("AwesomeProject", () => App);

@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
 
     @action 
     setPath=(path)=>{
-        this.path={...path};
+        // alert('设置path')
+        this.path=path;
     }
     
     @action

@@ -36,7 +36,7 @@ export default class App extends Component<Props> {
   onPressLearnMore = () => {
     //todo 改成了5
     //Notification.addEvent('徐俊超又成功啦', this.state.minus);
-    Notification.addEvent('徐俊超又成功啦', '2019-02-09','1');
+    Notification.addEvent('徐俊超又成功啦', '2019-03-06-25','1');
     Alert.alert(
       'test',
       'All your data are belong to us.'
@@ -51,7 +51,7 @@ export default class App extends Component<Props> {
         <Text style={styles.welcome}>这里搞随机单词测试</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
-        <Text>zhongyu neng yong le</Text>
+        <Text>zaaaaaa</Text>
         {/* <DatePickerIOS style={{ width: 400, height: 100 }}
           mode={"datetime"}   //选择器模式: 'date'(日期), 'time'(时间), 'datetime'(日期和时间)
           minimumDate={new Date()}  //最小时间 (这里设置的是当前的时间)

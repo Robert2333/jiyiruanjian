@@ -10,6 +10,11 @@ import React from 'react';
 import store from './stores/store.js'
 class Index extends React.Component {
 
+
+    // componentWillMount=()=>{
+    //     alert(1111);
+    //     store.main.setPath({path:this.props.notificationDate});
+    // }
     render() {
         return (
             <Provider {...store}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, TouchableOpacity, StyleSheet, NativeModules } from 'react-native'
+import { View, Text, Slider, NativeModules, StyleSheet } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import IosButton from '../../component/IosButton/IosButton'
@@ -40,10 +40,13 @@ export default class DetailsScreen extends React.Component {
         const { navigation } = this.props;
         const date = navigation.getParam('date', null);
         StorageUtil.save(date, date);
+        if(minus==='0'){
+            minus='1'
+        }
         Notification.addEvent('复习了', date, minus);
     }
 
-    pickerCancel=()=>{
+    pickerCancel = () => {
         this.setState({ showPicker: false })
         const { navigation } = this.props;
         const date = navigation.getParam('date', null);
@@ -134,13 +137,29 @@ export default class DetailsScreen extends React.Component {
                             <IosButton title="上一个" color="#2f54eb" onPress={() => { this.nextOrPre(false) }} width={80} />
                             <IosButton title="下一个" color="#2f54eb" onPress={() => { this.nextOrPre(true) }} width={80} />
                         </View>
+                        {/* 不这么写会导致max为0出现bug */}
+                        {this.state.words.length > 0 ?
+                            (<View style={{ width: 300, flex: 2, display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+                                <Text style={{fontSize:24}}>{this.state.index+1}/{this.state.words.length}</Text>
+                                <Slider
+                                    style={{ width: 300 }}
+                                    maximumValue={(this.state.words.length - 1)}
+                                    minimumValue={0}
+                                    value={this.state.index} step={1}
+                                    onValueChange={(e) => {
+                                        this.setState({ index: e, word: this.state.words[e] })
+                                    }
+                                    } />
+                            </View>) :
+                            <Text></Text>}
                     </View>
+
                 </View>
                 <MyDatePicker
                     visible={this.state.showPicker}
-                    ok={this.pickerPress} 
+                    ok={this.pickerPress}
                     cancel={this.pickerCancel}
-                    />
+                />
             </GestureRecognizer>
         );
     }
