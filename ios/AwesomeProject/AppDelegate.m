@@ -64,13 +64,12 @@ willPresentNotification:(UNNotification *)notification
 //                         @"2"];
   //如果是通过本地通知启动的
   UILocalNotification * localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-  Singleton *s=[[Singleton alloc]init];
-  NSString * hello=@"xjc";
-  if(s->date!=nil){
-    hello=(s->date);
-  }
-  NSDictionary *props = @{@"notificationDate" : hello};
-   printf("props:------------------");
+//  Singleton *s=[[Singleton alloc]init];
+//  NSString * hello=@"xjc";
+//  if(s->date!=nil){
+//    hello=(s->date);
+//  }
+  NSDictionary *props = @{@"notificationDate" : @""};
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   //获取用户的推送授权 iOS 10新方法
   [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
