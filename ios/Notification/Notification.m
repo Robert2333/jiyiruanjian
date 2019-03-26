@@ -28,7 +28,7 @@ RCT_EXPORT_MODULE();
   NSString * key = [defaults objectForKey:subTitle];
   if(key==nil){//调试，应该为==
     [defaults setObject:subTitle forKey:subTitle];
-//    UNTimeIntervalNotificationTrigger *trigger=[self createTrigger:(timeNum)];
+    UNTimeIntervalNotificationTrigger *trigger=[self createTrigger:(1)];
     UNTimeIntervalNotificationTrigger *trigger1=[self createTrigger:(timeNum+60*30)];
     UNTimeIntervalNotificationTrigger *trigger2=[self createTrigger:(timeNum+60*60*12)];
     UNTimeIntervalNotificationTrigger *trigger3=[self createTrigger:(timeNum+60*60*24)];
@@ -36,7 +36,7 @@ RCT_EXPORT_MODULE();
     UNTimeIntervalNotificationTrigger *trigger5=[self createTrigger:(timeNum+60*60*24*4)];
     UNTimeIntervalNotificationTrigger *trigger6=[self createTrigger:(timeNum+60*60*24*7)];
     UNTimeIntervalNotificationTrigger *trigger7=[self createTrigger:(timeNum+60*60*24*15)];
-//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger];
+    [self createNotification:@"通知设置成功" subTitle:[subTitle stringByAppendingString:@"-0"] trigger:trigger];
     [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger1];
     [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-2"] trigger:trigger2];
     [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-3"] trigger:trigger3];
