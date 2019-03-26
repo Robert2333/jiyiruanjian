@@ -26,25 +26,25 @@ RCT_EXPORT_MODULE();
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if(subTitle!=nil){
   NSString * key = [defaults objectForKey:subTitle];
-//  if(key==nil){//调试，应该为==
+  if(key==nil){//调试，应该为==
     [defaults setObject:subTitle forKey:subTitle];
-    UNTimeIntervalNotificationTrigger *trigger=[self createTrigger:(timeNum)];
-//    UNTimeIntervalNotificationTrigger *trigger1=[self createTrigger:(timeNum+60*30)];
-//    UNTimeIntervalNotificationTrigger *trigger2=[self createTrigger:(timeNum+60*60*12)];
-//    UNTimeIntervalNotificationTrigger *trigger3=[self createTrigger:(timeNum+60*60*24)];
-//    UNTimeIntervalNotificationTrigger *trigger4=[self createTrigger:(timeNum+60*60*24*2)];
-//    UNTimeIntervalNotificationTrigger *trigger5=[self createTrigger:(timeNum+60*60*24*4)];
-//    UNTimeIntervalNotificationTrigger *trigger6=[self createTrigger:(timeNum+60*60*24*7)];
-//    UNTimeIntervalNotificationTrigger *trigger7=[self createTrigger:(timeNum+60*60*24*15)];
-    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger];
-//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger1];
-//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-2"] trigger:trigger2];
-//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-3"] trigger:trigger3];
-//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-4"] trigger:trigger4];
-//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-5"] trigger:trigger5];
-//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-6"] trigger:trigger6];
-//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-7"] trigger:trigger7];
-//  }
+//    UNTimeIntervalNotificationTrigger *trigger=[self createTrigger:(timeNum)];
+    UNTimeIntervalNotificationTrigger *trigger1=[self createTrigger:(timeNum+60*30)];
+    UNTimeIntervalNotificationTrigger *trigger2=[self createTrigger:(timeNum+60*60*12)];
+    UNTimeIntervalNotificationTrigger *trigger3=[self createTrigger:(timeNum+60*60*24)];
+    UNTimeIntervalNotificationTrigger *trigger4=[self createTrigger:(timeNum+60*60*24*2)];
+    UNTimeIntervalNotificationTrigger *trigger5=[self createTrigger:(timeNum+60*60*24*4)];
+    UNTimeIntervalNotificationTrigger *trigger6=[self createTrigger:(timeNum+60*60*24*7)];
+    UNTimeIntervalNotificationTrigger *trigger7=[self createTrigger:(timeNum+60*60*24*15)];
+//    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger];
+    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-1"] trigger:trigger1];
+    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-2"] trigger:trigger2];
+    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-3"] trigger:trigger3];
+    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-4"] trigger:trigger4];
+    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-5"] trigger:trigger5];
+    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-6"] trigger:trigger6];
+    [self createNotification:title subTitle:[subTitle stringByAppendingString:@"-7"] trigger:trigger7];
+  }
   }
 }
 
