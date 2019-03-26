@@ -26,6 +26,14 @@ const styles = StyleSheet.create({
     @observable
     path = {path:''};
 
+    @observable
+    notificationDate={path:''};
+
+    @action
+    setNotification=(notificationDate)=>{
+        this.notificationDate=notificationDate;
+    }
+
     @action 
     setPath=(path)=>{
         // alert('设置path')

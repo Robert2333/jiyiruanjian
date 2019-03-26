@@ -13,6 +13,7 @@ const 加载中 = '加载中'
 @inject(stores => ({
     hideTab: stores.main.hideTab,
     showTab: stores.main.showTab,
+    setPath:stores.main.setPath,
 }))
 @observer
 export default class DetailsScreen extends React.Component {
@@ -93,7 +94,7 @@ export default class DetailsScreen extends React.Component {
         const { navigation } = this.props;
         const date = navigation.getParam('date', null);
         this.getWords(date);
-
+        this.props.setPath(Object.assign({}, { path: '' }));
         this.props.hideTab();
 
         StorageUtil.get(date).then(d => {

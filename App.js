@@ -30,6 +30,8 @@ function px2dp(px) {
   showTab: stores.main.showTab,
   path: stores.main.path,
   setPath: stores.main.setPath,
+  notificationDate: stores.main.notificationDate,
+  setNotification:stores.main.setNotification
 }))
 @observer
 export default class App extends Component {
@@ -38,9 +40,12 @@ export default class App extends Component {
   shouldComponentUpdate = (nextProps, nextState) => {
     return true;
   }
-  componentDidUpdate = () => {
-    if (this.props.date !== undefined) {
-      let date = this.props.date;
+  componentWillUpdate = () => {
+   // alert(this.props.notificationDate.path);
+    let date=this.props.notificationDate.path;
+    if(date==undefined){
+      date='';
+    }
       if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
         StorageUtil.get(date).then(d => {
           if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
@@ -51,7 +56,30 @@ export default class App extends Component {
           }
         })
       }
+  }
+
+  componentWillReceiveProps=(nextProps)=>{
+    this.goToNavIndex(nextProps);
+  }
+
+  goToNavIndex=(props)=>{
+    let date=props.notificationDate.path;
+    if(date==undefined){
+      date='';
     }
+      if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
+        StorageUtil.get(date).then(d => {
+          if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
+           // StorageUtil.save(date, date);
+            date = date.substr(0, 10);
+            // props.setPath({ path: date });
+            this.setState({ selectedTab: 'profile' });
+          }
+        })
+      }
+  }
+  componentDidUpdate = () => {
+      this.goToNavIndex(this.props);
   }
 
 

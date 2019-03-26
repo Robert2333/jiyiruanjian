@@ -3,6 +3,7 @@ import { View, Text, Button, FlatList, StyleSheet, NativeModules } from 'react-n
 import { createStackNavigator } from 'react-navigation';
 import Word from '../word/Word.js'
 import ListItem from './component/ListItem/ListItem'
+import StorageUtil from '../utils/StorageUtil'
 import { inject, observer } from 'mobx-react'
 
 const Notification = NativeModules.Notification;
@@ -10,6 +11,8 @@ const Notification = NativeModules.Notification;
 @inject(stores => ({
   path: stores.main.path,
   setPath: stores.main.setPath,
+  notificationDate: stores.main.notificationDate,
+  setNotification:stores.main.setNotification
 }))
 @observer
 class HomeScreen extends React.Component {
@@ -40,20 +43,30 @@ class HomeScreen extends React.Component {
 
   //url https://citynotes.cn/getContent
   componentDidMount = () => {
-    if (this.props.path.path !== '' && this.props.path.path !== undefined) {
-      this.props.navigation.navigate('Word', { date: this.props.path.path })
-      this.props.setPath({ path: '' });
-    }
+    this.goToWordPage(this.props);
     this.getData();
   }
 
-  componentWillUpdate = () => {
-    // alert(this.props.path.path)
-    if (this.props.path.path !== '' && this.props.path.path !== undefined) {
-      this.props.navigation.navigate('Word', { date: this.props.path.path })
-      this.props.setPath(Object.assign({}, { path: '' }));
+  goToWordPage=(props)=>{
+    let date=props.notificationDate.path;
+    if(date==undefined){
+      date='';
     }
+      if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
+        StorageUtil.get(date).then(d => {
+          if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
+            StorageUtil.save(date, date);
+            date = date.substr(0, 10);
+            this.props.navigation.navigate('Word', { date: date })
+          }
+        })
+      }
   }
+
+  componentWillReceiveProps=(nextProps)=>{
+    this.goToWordPage(nextProps);
+  }
+
   state = { dataSource: [] }
 
   render() {
