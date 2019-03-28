@@ -12,16 +12,18 @@ const Notification = NativeModules.Notification;
   path: stores.main.path,
   setPath: stores.main.setPath,
   notificationDate: stores.main.notificationDate,
-  setNotification:stores.main.setNotification
+  setNotification: stores.main.setNotification
 }))
 @observer
 class HomeScreen extends React.Component {
+
 
   static navigationOptions = {
     title: '单词列表',
   };
 
   getData = () => {
+    this.setState({reFresh:true})
     return fetch('https://citynotes.cn/getContent', {
       method: 'GET',
       headers: {
@@ -34,7 +36,7 @@ class HomeScreen extends React.Component {
         // for(let i=0;i<result.length;i++){
         //   Notification.addEvent('复习了',result[i].date,'1');
         // }
-        this.setState({ dataSource: result })
+        this.setState({ dataSource: result ,reFresh:false})
       })
       .catch((error) => {
         console.error(error);
@@ -47,27 +49,27 @@ class HomeScreen extends React.Component {
     this.getData();
   }
 
-  goToWordPage=(props)=>{
-    let date=props.notificationDate.path;
-    if(date==undefined){
-      date='';
+  goToWordPage = (props) => {
+    let date = props.notificationDate.path;
+    if (date == undefined) {
+      date = '';
     }
-      if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
-        StorageUtil.get(date).then(d => {
-          if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
-            StorageUtil.save(date, date);
-            date = date.substr(0, 10);
-            this.props.navigation.navigate('Word', { date: date })
-          }
-        })
-      }
+    if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
+      StorageUtil.get(date).then(d => {
+        if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
+          StorageUtil.save(date, date);
+          date = date.substr(0, 10);
+          this.props.navigation.navigate('Word', { date: date })
+        }
+      })
+    }
   }
 
-  componentWillReceiveProps=(nextProps)=>{
+  componentWillReceiveProps = (nextProps) => {
     this.goToWordPage(nextProps);
   }
 
-  state = { dataSource: [] }
+  state = { dataSource: [],reFresh:false }
 
   render() {
     return (
@@ -76,11 +78,11 @@ class HomeScreen extends React.Component {
           data={this.state.dataSource}
           renderItem={({ item, index }) => <ListItem key={index} date={item.date} index={index} count={item.count}
             navigation={this.props.navigation} />}
-          ItemSeparatorComponent={() => <View style={styles.separator}
-         
-          />
-
-          }
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          refreshing={this.state.reFresh}
+          onRefresh={() => {
+            this.getData()
+          }}
 
         />
       </View>
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginBottom:80,
+    marginBottom: 80,
 
   },
   item: {

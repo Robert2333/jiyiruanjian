@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
+//放一个变量里去存badge，设置的时候去读
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -22,11 +22,16 @@ RCTBridge* _myBridge;
 
 // 通知的点击事件
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
-  
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSDictionary * userInfo = response.notification.request.content.userInfo;
   UNNotificationRequest *request = response.notification.request; // 收到推送的请求
   UNNotificationContent *content = request.content; // 收到推送的消息内容
   NSNumber *badge = content.badge;  // 推送消息的角标
+//  NSNumber * number=[defaults objectForKey:@"badgeNum"] ;
+  
+//  [UIApplication sharedApplication].applicationIconBadgeNumber=0;
+//  [UIApplication sharedApplication].applicationIconBadgeNumber=[UIApplication sharedApplication].applicationIconBadgeNumber-1;
+//  [defaults setObject:[NSNumber numberWithInt:[number intValue]-1] forKey:@"badgeNum"];
   NSString *body = content.body;    // 推送消息体
   UNNotificationSound *sound = content.sound;  // 推送消息的声音
   NSString *subtitle = content.subtitle;  // 推送消息的副标题
@@ -37,7 +42,6 @@ RCTBridge* _myBridge;
 //  NSArray *imageList = @[@"http://foo.com/bar1.png",
 //                         @"http://foo.com/bar2.png"];
 //
-  printf("----------------------------------");
 
   NSDictionary *props = @{@"notificationDate" : subtitle};
 //  s->date=props;
@@ -96,10 +100,7 @@ willPresentNotification:(UNNotification *)notification
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
-  
 
-  _rootView.appProperties=@{@"notificationDate" : @"2019-03-13"};
   return YES;
 }
 

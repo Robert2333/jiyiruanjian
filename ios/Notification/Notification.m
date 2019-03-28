@@ -22,8 +22,14 @@ RCT_EXPORT_MODULE();
 -(void) setNotification:(NSString * )title subTitle:(NSString *)subTitle time:(NSString *)time{
   double timeNum=[time doubleValue];
   //使用NSUserDefaults来保存
-  
+  //获取badge
+
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  //如果没有，则设置为0
+//  NSNumber * badge=[defaults objectForKey:@"badgeNum"];
+//  if(badge==nil){
+//    [defaults setObject:[NSNumber numberWithInt:0] forKey:@"badgeNum"];
+//  }
   if(subTitle!=nil){
   NSString * key = [defaults objectForKey:subTitle];
   if(key==nil){//调试，应该为==
@@ -56,7 +62,13 @@ RCT_EXPORT_MODULE();
   content.title = title;
   content.subtitle = subTitle;
   content.body = @"复习喽";
-  content.badge = [NSNumber numberWithInt:1];
+//  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  //如果没有，则设置为0
+//  NSNumber * badge=[defaults objectForKey:@"badgeNum"];
+//  NSNumber * newBadge=[NSNumber numberWithInt:([badge intValue]+1)];
+  //int i=[UIApplication sharedApplication].applicationIconBadgeNumber;
+  content.badge = @1;
+//  [defaults setObject:newBadge forKey:@"badgeNum"];
   content.sound = [UNNotificationSound defaultSound];
   content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
   UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:subTitle content:content trigger:trigger];
@@ -67,7 +79,7 @@ RCT_EXPORT_MODULE();
 //      UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"本地通知" message:@"成功添加推送" preferredStyle:UIAlertControllerStyleAlert];
 //      UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
 //      [alert addAction:cancelAction];
-//      [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+//      [[pplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
       //此处省略一万行需求。。。。
     }
   }];
