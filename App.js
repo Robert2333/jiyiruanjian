@@ -101,9 +101,6 @@ export default class App extends Component {
           // badgeText="0"
           onPress={() => this.setState({ selectedTab: 'home' })}>
           {<View style={{ flex: 1, justifyContent: 'center' }}>
-            <Text>sadfasdfasd</Text>
-            <Text>sadfasdfasd</Text>
-            <Text>sadfasdfasd</Text>
             {/* <Text>{this.props.date}}</Text> */}
             <T />
 

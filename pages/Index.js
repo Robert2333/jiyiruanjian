@@ -61,7 +61,7 @@ export default class App extends Component<Props> {
       }
     })
   }
-  state = { words: [], index: 0, word: { kanji: '暂无数据', katakana: '暂无数据', chinese: '暂无数据' }, up: false, down: false, showPicker: false, color: '' }
+  state = { words: [], index: 0, word: { kanji: '暂无数据', katakana: '暂无数据', chinese: '暂无数据',date:'' }, up: false, down: false, showPicker: false, color: '' }
 
 
   componentWillMount = () => {
@@ -145,23 +145,6 @@ export default class App extends Component<Props> {
   }
 
 
-  collectionWord = () => {
-    const { navigation } = this.props;
-    const date = navigation.getParam('date', null);
-    StorageUtil.get("collection").then(data => {
-      const key = date + '#' + this.state.word.kanji;
-      let newData = {};
-      newData[key] = this.state.word;
-      if (data === 'null') {
-        StorageUtil.save("collection", newData);
-      } else {
-        const targetData = Object.assign({}, data, newData);
-        StorageUtil.save("collection", targetData);
-        alert(JSON.stringify(targetData));
-      }
-    })
-  }
-
 
   render() {
     const showUp = this.state.up ? styles.showText : styles.hideText;
@@ -172,9 +155,10 @@ export default class App extends Component<Props> {
         {/* <Text>{this.state.words.length}</Text>
                   <Text>{this.state.index}</Text> */}
         {/* <View style={{ flex: 1, display: 'flex', flexDirection: 'row' ,justifyContent:'space-around'}}> */}
+        <Text style={{marginTop:50}}>{this.state.word.date}</Text>
         <Text style={showUp}>{this.state.word.katakana}</Text>
         <View style={{ position: 'absolute', right: 10, top: -5 }}>
-          <Icon name="star" size={30} color={'yellow'} onPress={() => this.collectionWord()} />
+          <Icon name="star" size={30} color={'yellow'} onPress={() => alert("请到具体页面去取消收藏")} />
         </View>
         {/* </View> */}
         <Text style={{ fontSize: 40, flex: 1 }}>{this.state.word.kanji}</Text>
