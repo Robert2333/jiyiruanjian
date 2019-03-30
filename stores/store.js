@@ -27,7 +27,16 @@ const styles = StyleSheet.create({
     path = {path:''};
 
     @observable
+    collectionState = true;
+
+
+    @observable
     notificationDate={path:''};
+
+    @action
+    changeCollectionState=()=>{
+        this.collectionState=!this.collectionState;
+    }
 
     @action
     setNotification=(notificationDate)=>{

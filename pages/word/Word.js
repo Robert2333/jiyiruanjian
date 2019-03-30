@@ -1,12 +1,19 @@
 import React from 'react';
-import { View, Text, Slider, NativeModules, StyleSheet, PanResponder } from 'react-native'
+import { View, Text, Slider, NativeModules, StyleSheet, PanResponder, Dimensions, Button } from 'react-native'
 import { inject, observer } from 'mobx-react'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import IosButton from '../../component/IosButton/IosButton'
 import MyDatePicker from './component/MyDatePicker'
 import StorageUtil from '../utils/StorageUtil'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { autorun } from 'mobx';
 //push直接入栈
+const deviceW = Dimensions.get('window').width
+const basePx = 375
 
+function px2dp(px) {
+    return px * deviceW / basePx
+}
 
 const Notification = NativeModules.Notification;
 const 加载中 = '加载中'
@@ -14,11 +21,12 @@ const 加载中 = '加载中'
     hideTab: stores.main.hideTab,
     showTab: stores.main.showTab,
     setPath: stores.main.setPath,
+    changeCollectionState: stores.main.changeCollectionState,
 }))
 @observer
 export default class DetailsScreen extends React.Component {
 
-    state = { words: [], index: 0, word: { kanji: 加载中, katakana: 加载中, chinese: 加载中 }, up: false, down: false, showPicker: false }
+    state = { words: [], index: 0, word: { kanji: 加载中, katakana: 加载中, chinese: 加载中 }, up: false, down: false, showPicker: false, color: '#fafafa', collection: {} }
     getWords = (date) => {
         return fetch(`https://citynotes.cn/getWord?date=${date}`, {
             method: 'GET',
@@ -29,7 +37,13 @@ export default class DetailsScreen extends React.Component {
         })
             .then((response) => response.json())
             .then((result) => {
-                this.setState({ words: result, index: 0, word: result[0] })
+                this.setState({ words: result, index: 0, word: result[0] },()=>{
+                    StorageUtil.get("collection").then(data => {
+                        this.setState({ collection: data }, () => {
+                            this.getColor();
+                        })
+                    })
+                });
             })
             .catch((error) => {
                 console.error(error);
@@ -44,12 +58,12 @@ export default class DetailsScreen extends React.Component {
             onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
             onMoveShouldSetPanResponder: (evt, gestureState) => {
                 //return true if user is swiping, return false if it's a single click
-                if ((Math.abs(gestureState.dx) > 20 || Math.abs(gestureState.dy) >20) ){
+                if ((Math.abs(gestureState.dx) > 20 || Math.abs(gestureState.dy) > 20)) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
-                        //    return !(gestureState.dx === 0 && gestureState.dy === 0)                  
+                //    return !(gestureState.dx === 0 && gestureState.dy === 0)                  
             },
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,
 
@@ -68,7 +82,7 @@ export default class DetailsScreen extends React.Component {
                 // 用户放开了所有的触摸点，且此时视图已经成为了响应者。
                 // 一般来说这意味着一个手势操作已经成功完成。
                 // alert(gestureState.dx)
-                if ((Math.abs(gestureState.dx) > 20 || Math.abs(gestureState.dy) >20) ){
+                if ((Math.abs(gestureState.dx) > 20 || Math.abs(gestureState.dy) > 20)) {
                     if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
                         if (gestureState.dx > 0) {
                             this.nextOrPre(false);
@@ -82,7 +96,7 @@ export default class DetailsScreen extends React.Component {
                             this.setState({ down: !this.state.down })
                         }
                     }
-                }else{
+                } else {
                     return false;
                 }
 
@@ -122,17 +136,22 @@ export default class DetailsScreen extends React.Component {
         const { index, word, words } = this.state;
         if (isNext) {
             if (this.state.index < this.state.words.length - 1) {
-                this.setState({ index: index + 1, word: words[index + 1] })
+                this.setState({ index: index + 1, word: words[index + 1] }, () => {
+                    this.getColor();
+                })
             } else {
                 alert("最后一个了")
             }
         } else {
             if (this.state.index > 0) {
-                this.setState({ index: index - 1, word: words[index - 1] })
+                this.setState({ index: index - 1, word: words[index - 1] }, () => {
+                    this.getColor();
+                })
             } else {
                 alert("已经是第一个了")
             }
         }
+
     }
 
     onSwipe = (gestureName, gestureState) => {
@@ -167,33 +186,87 @@ export default class DetailsScreen extends React.Component {
 
             }
         })
-        // if(StorageUtil.get(date)!=undefined){
 
-        // }
+
     }
 
     componentWillUnmount = () => {
         this.props.showTab();
     }
 
+
     static navigationOptions = ({ navigation }) => {
         return {
-            title: navigation.getParam('date', '单词'),
+            headerTitle: navigation.getParam('date', '单词'),
         };
     };
+
+    //存储不会的单词用日期+单词作key，1为value，结构为：{"collection",{date#word.kanji,word}}
+    getColor = () => {
+        const data = this.state.collection;
+
+        if (data !== 'null' && data !== {}) {
+            const { navigation } = this.props;
+            const date = navigation.getParam('date', null);
+            //alert(JSON.stringify(data[`${date}#${this.state.word.kanji}`] ));
+            if (data[`${date}#${this.state.word.kanji}`] !== undefined && data[`${date}#${this.state.word.kanji}`] !== '') {
+                this.setState({ color: 'blue' })
+            } else {
+                this.setState({ color: '#fafafa' })
+                // return 'yellow';
+            }
+        } else {
+            this.setState({ color: '#fafafa' })
+            // return 'red';
+        }
+
+    }
+
+    collectionWord = () => {
+        const { navigation } = this.props;
+        const date = navigation.getParam('date', null);
+        StorageUtil.get("collection").then(data => {
+            const key = date + '#' + this.state.word.kanji;
+            let newData = {};
+            newData[key] = this.state.word;
+            if (data === 'null') {
+                StorageUtil.save("collection", newData);
+                this.setState({ "collection": newData })
+            } else {
+                //如果有的没有的情况下，是收藏，否则就是直接取消
+                if (data[`${date}#${this.state.word.kanji}`] === undefined || data[`${date}#${this.state.word.kanji}`] === '') {
+                    const targetData = Object.assign({}, data, newData);
+                    StorageUtil.save("collection", targetData);
+                    this.setState({ "collection": targetData })
+                    this.setState({ color: 'blue' })
+                } else {
+                    let targetData=data;
+                    delete targetData[`${date}#${this.state.word.kanji}`];
+                    targetData=Object.assign({},targetData)
+                    StorageUtil.save("collection", targetData);
+                    this.setState({ "collection": targetData })
+                    this.setState({ color: '#fafafa' })
+                }
+            }
+            this.props.changeCollectionState();
+        })
+    }
+
 
     render() {
         const showUp = this.state.up ? styles.showText : styles.hideText;
         const showDown = this.state.down ? styles.showText : styles.hideText;
+        // const color = this.getColor();
         return (
-            // <GestureRecognizer
-            //     onSwipe={(direction, state) => this.onSwipe(direction, state)}
-            //     style={{ flex: 1 }}
-            // >
             <View style={{ flex: 1, marginTop: 20, alignItems: 'center', justifyContent: 'space-around', flexDirection: 'column' }}  {...this._panResponder.panHandlers}>
                 {/* <Text>{this.state.words.length}</Text>
                     <Text>{this.state.index}</Text> */}
+                {/* <View style={{ flex: 1, display: 'flex', flexDirection: 'row' ,justifyContent:'space-around'}}> */}
                 <Text style={showUp}>{this.state.word.katakana}</Text>
+                <View style={{ position: 'absolute', right: 10, top: -5 }}>
+                    <Icon name="star" size={30} color={this.state.color} onPress={() => this.collectionWord()} />
+                </View>
+                {/* </View> */}
                 <Text style={{ fontSize: 40, flex: 1 }}>{this.state.word.kanji}</Text>
                 <View style={{ display: 'flex', flex: 2, alignItems: 'center', justifyContent: 'space-around', flexDirection: 'column' }}>
                     <Text style={showDown}>{this.state.word.chinese}</Text>
@@ -224,16 +297,18 @@ export default class DetailsScreen extends React.Component {
                 />
             </View>
 
-            // </GestureRecognizer>
         );
     }
 }
 
 const styles = StyleSheet.create({
     showText: {
-        fontSize: 25, flex: 1
+        fontSize: 25,
+        flex: 1,
+        // marginLeft:50 ,
+
     },
     hideText: {
-        fontSize: 25, flex: 1, width: 0
+        fontSize: 25, flex: 1, color: 'transparent',
     },
 })

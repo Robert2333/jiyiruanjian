@@ -62,6 +62,8 @@ willPresentNotification:(UNNotification *)notification
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  //加载页面停留2s
+  [NSThread sleepForTimeInterval:2];
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   _myBridge=bridge;
 //  NSArray *imageList = @[@"1",
