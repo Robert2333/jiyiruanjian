@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
 
     @action
     setNotification=(notificationDate)=>{
+        //todo 发送消息给后台，然后就可以查询到哪些遗漏，哪些已经记忆过了
         this.notificationDate=notificationDate;
     }
 

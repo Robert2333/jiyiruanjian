@@ -22,11 +22,35 @@ const 加载中 = '加载中'
     showTab: stores.main.showTab,
     setPath: stores.main.setPath,
     changeCollectionState: stores.main.changeCollectionState,
+    notificationDate: stores.main.notificationDate,
 }))
 @observer
 export default class DetailsScreen extends React.Component {
 
     state = { words: [], index: 0, word: { kanji: 加载中, katakana: 加载中, chinese: 加载中 }, up: false, down: false, showPicker: false, color: '#fafafa', collection: {} }
+
+
+    componentWillReceiveProps = (nextProps) => {
+        this.goToWordPage(nextProps);
+    }
+
+    goToWordPage = (props) => {
+        let date = props.notificationDate.path;
+        if (date == undefined) {
+            date = '';
+        }
+        if (date !== undefined && date.trim() !== '' && date != null && date != 'null') {
+            StorageUtil.get(date).then(d => {
+                if (date !== undefined && date.trim() !== '' && date != null && date != 'null' && date !== d) {
+                    StorageUtil.save(date, date);
+                    date = date.substr(0, 10);
+                    this.props.navigation.push('Word', { date: date })
+                }
+            })
+        }
+    }
+
+
     getWords = (date) => {
         return fetch(`https://citynotes.cn/getWord?date=${date}`, {
             method: 'GET',
@@ -37,7 +61,7 @@ export default class DetailsScreen extends React.Component {
         })
             .then((response) => response.json())
             .then((result) => {
-                this.setState({ words: result, index: 0, word: result[0] },()=>{
+                this.setState({ words: result, index: 0, word: result[0] }, () => {
                     StorageUtil.get("collection").then(data => {
                         this.setState({ collection: data }, () => {
                             this.getColor();
@@ -240,9 +264,9 @@ export default class DetailsScreen extends React.Component {
                     this.setState({ "collection": targetData })
                     this.setState({ color: 'blue' })
                 } else {
-                    let targetData=data;
+                    let targetData = data;
                     delete targetData[`${date}#${this.state.word.kanji}`];
-                    targetData=Object.assign({},targetData)
+                    targetData = Object.assign({}, targetData)
                     StorageUtil.save("collection", targetData);
                     this.setState({ "collection": targetData })
                     this.setState({ color: '#fafafa' })
